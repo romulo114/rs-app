@@ -1,6 +1,26 @@
 import Link from 'next/link'
 import clsx from 'clsx'
 
+interface IBaseColor {
+  slate: string,
+  white: string,
+  blue?: string
+}
+interface IBaseVarientStyle {
+  solid: IBaseColor,
+  outline: IBaseColor
+}
+enum EBaseVarientStyles {
+  SOLID = 'solid',
+  OUTLINE = 'outline',
+}
+type TBaseVarientStyles = `${EBaseVarientStyles}`
+enum EBaseColorStyles {
+  SLATE = 'slate',
+  WHITE = 'white'
+}
+type TBaseColorStyles = `${EBaseColorStyles}`
+
 const baseStyles = {
   solid:
     'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2',
@@ -24,16 +44,23 @@ const variantStyles = {
   },
 }
 
+type Props = {
+  variant: string,
+  color: string,
+  className: string,
+  href: string
+}
+
 export function Button({
   variant = 'solid',
   color = 'slate',
   className,
   href,
   ...props
-}) {
+}: Props) {
   className = clsx(
-    baseStyles[variant],
-    variantStyles[variant][color],
+    baseStyles[variant as TBaseVarientStyles],
+    (variantStyles[variant as TBaseVarientStyles] as any)[color] as TBaseColorStyles,
     className
   )
 
