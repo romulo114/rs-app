@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { Form, Formik } from 'formik';
 
 import { AuthLayout } from '@/components/common/AuthLayout';
 import { Button } from '@/components/common/Button';
 import { TextField } from '@/components/common/Fields';
 import { Logo } from '@/components/common/Logo';
-import { Form, Formik } from 'formik';
 import { validationSchema } from '@/utils/schema';
+
 export default function Signup() {
   return (
     <>
@@ -34,34 +35,40 @@ export default function Signup() {
             </p>
           </div>
         </div>
-        {/* className="mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2" */}
         <Formik
           initialValues={{
-            limit: 1,
-            accountStatus: 'active',
-            role: 'individual',
+            firstname: '',
+            lastname: '',
+            email: '',
+            password: '',
           }}
           validationSchema={validationSchema.signUpSchema}
           onSubmit={() => console.log('submitted')}
         >
           {({ touched, errors, handleBlur, handleChange, values }) => {
             return (
-              <Form>
+              <Form className='mt-10 grid grid-cols-1 gap-y-8 gap-x-6 sm:grid-cols-2'>
                 <TextField
                   label='First name'
-                  id='first_name'
-                  name='first_name'
+                  id='firstname'
+                  name='firstname'
                   type='text'
                   autoComplete='given-name'
-                  required
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.firstname && errors?.firstname}
                 />
                 <TextField
                   label='Last name'
-                  id='last_name'
-                  name='last_name'
+                  id='lastname'
+                  name='lastname'
                   type='text'
                   autoComplete='family-name'
-                  required
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.lastname && errors?.lastname}
                 />
                 <TextField
                   className='col-span-full'
@@ -70,7 +77,10 @@ export default function Signup() {
                   name='email'
                   type='email'
                   autoComplete='email'
-                  required
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.email && errors?.email}
                 />
                 <TextField
                   className='col-span-full'
@@ -79,7 +89,10 @@ export default function Signup() {
                   name='password'
                   type='password'
                   autoComplete='new-password'
-                  required
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.password && errors?.password}
                 />
                 <div className='col-span-full'>
                   <Button

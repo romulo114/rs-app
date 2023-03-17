@@ -5,6 +5,8 @@ import { AuthLayout } from '@/components/common/AuthLayout';
 import { Button } from '@/components/common/Button';
 import { TextField } from '@/components/common/Fields';
 import { Logo } from '@/components/common/Logo';
+import { validationSchema } from '@/utils/schema';
+import { Form, Formik } from 'formik';
 
 export default function Signin() {
   return (
@@ -33,36 +35,55 @@ export default function Signin() {
             </p>
           </div>
         </div>
-        <form action='#' className='mt-10 grid grid-cols-1 gap-y-8'>
-          <TextField
-            label='Email address'
-            id='email'
-            name='email'
-            type='email'
-            autoComplete='email'
-            required
-          />
-          <TextField
-            label='Password'
-            id='password'
-            name='password'
-            type='password'
-            autoComplete='current-password'
-            required
-          />
-          <div>
-            <Button
-              type='submit'
-              variant='solid'
-              color='blue'
-              className='w-full'
-            >
-              <span>
-                Sign in <span aria-hidden='true'>&rarr;</span>
-              </span>
-            </Button>
-          </div>
-        </form>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={validationSchema.signInSchema}
+          onSubmit={() => console.log('submitted')}
+        >
+          {({ touched, errors, handleBlur, handleChange, values }) => {
+            return (
+              <Form className='mt-10 grid grid-cols-1 gap-y-8'>
+                <TextField
+                  label='Email address'
+                  id='email'
+                  name='email'
+                  type='email'
+                  autoComplete='email'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.email && errors?.email}
+                />
+                <TextField
+                  label='Password'
+                  id='password'
+                  name='password'
+                  type='password'
+                  autoComplete='current-password'
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  values={values}
+                  error={touched.password && errors?.password}
+                />
+                <div>
+                  <Button
+                    type='submit'
+                    variant='solid'
+                    color='blue'
+                    className='w-full'
+                  >
+                    <span>
+                      Sign in <span aria-hidden='true'>&rarr;</span>
+                    </span>
+                  </Button>
+                </div>
+              </Form>
+            );
+          }}
+        </Formik>
       </AuthLayout>
     </>
   );
