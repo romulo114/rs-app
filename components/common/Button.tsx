@@ -1,32 +1,32 @@
-import Link from 'next/link'
-import clsx from 'clsx'
+import Link from 'next/link';
+import clsx from 'clsx';
 
 interface IBaseColor {
-  slate: string,
-  white: string,
-  blue?: string
+  slate: string;
+  white: string;
+  blue?: string;
 }
 interface IBaseVarientStyle {
-  solid: IBaseColor,
-  outline: IBaseColor
+  solid: IBaseColor;
+  outline: IBaseColor;
 }
 enum EBaseVarientStyles {
   SOLID = 'solid',
   OUTLINE = 'outline',
 }
-type TBaseVarientStyles = `${EBaseVarientStyles}`
+type TBaseVarientStyles = `${EBaseVarientStyles}`;
 enum EBaseColorStyles {
   SLATE = 'slate',
-  WHITE = 'white'
+  WHITE = 'white',
 }
-type TBaseColorStyles = `${EBaseColorStyles}`
+type TBaseColorStyles = `${EBaseColorStyles}`;
 
 const baseStyles = {
   solid:
     'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2',
   outline:
     'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-none',
-}
+};
 
 const variantStyles = {
   solid: {
@@ -42,31 +42,36 @@ const variantStyles = {
     white:
       'ring-slate-700 text-white hover:ring-slate-500 active:ring-slate-700 active:text-slate-400 focus-visible:outline-white',
   },
-}
+};
 
 type Props = {
-  variant: string,
-  color: string,
-  className: string,
-  href: string
-}
+  variant: string;
+  color: string;
+  className: string;
+  href?: string;
+  type: 'button' | 'submit' | 'reset' | undefined;
+  children?: React.ReactNode;
+};
 
 export function Button({
   variant = 'solid',
   color = 'slate',
   className,
   href,
+  type,
   ...props
 }: Props) {
   className = clsx(
     baseStyles[variant as TBaseVarientStyles],
-    (variantStyles[variant as TBaseVarientStyles] as any)[color] as TBaseColorStyles,
-    className
-  )
+    (variantStyles[variant as TBaseVarientStyles] as any)[
+      color
+    ] as TBaseColorStyles,
+    className,
+  );
 
   return href ? (
     <Link href={href} className={className} {...props} />
   ) : (
-    <button className={className} {...props} />
-  )
+    <button className={className} {...props} type={type ? type : 'button'} />
+  );
 }
